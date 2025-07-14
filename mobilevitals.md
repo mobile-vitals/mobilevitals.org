@@ -26,6 +26,20 @@ Cold Start repsresents a users first experience with your application. Make a go
 
 [//]: # "prompt(cursor): replace this with a description of how to measure cold start on an iOS device with syntax highlighted code samples."
 
+#### Thresholds
+
+##### Android
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
+##### iOS
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
 ### Warm Start
 
 Warm Starts measure how long it takes your application to start when some combination of
@@ -47,6 +61,19 @@ scratch. Slow Warm Start performance will contribute to bad perceived performanc
 
 [//]: # "prompt(cursor): replace this with a description of how to measure warm start on an iOS device with syntax highlighted code samples."
 
+#### Thresholds
+
+##### Android
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
+##### iOS
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
 
 ### Time to Initial Display
 
@@ -67,6 +94,20 @@ This metric is a good indicator of when your user perceives your application as 
 
 [//]: # "prompt(cursor): replace this with a description of how to measure Time to Intiial Display on an iOS device with syntax highlighted code samples."
 
+#### Thresholds
+
+##### Android
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
+##### iOS
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
 ### Time to Full Display
 
 The time it takes your application to actually become useable.
@@ -85,6 +126,20 @@ your application becomes useable, this will contribute to your users perceived p
 ##### iOS
 
 [//]: # "prompt(cursor): replace this with a description of how to measure Time to Full Display on an iOS device with syntax highlighted code samples."
+
+#### Thresholds
+
+##### Android
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
+##### iOS
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
 
 ### Frame Delay
 
@@ -107,6 +162,20 @@ A janky or frozen application feels unstable and, in general, is a bad user expe
 ##### iOS
 
 [//]: # "prompt(cursor): replace this with a description of how to measure render delay on an iOS device with syntax highlighted code samples."
+
+#### Thresholds
+
+##### Android
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
+
+##### iOS
+
+* `good`: 200ms - 1s.
+* `meh`: 1s - 3s.
+* `bad`: >3s.
 
 ## Calculating Mobile Vitals Score
 
