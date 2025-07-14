@@ -1,4 +1,4 @@
-# Mobile Vitals Website
+# MobileVitals.org
 
 A modern, responsive website for Mobile Vitals - quality signals for mobile development, inspired by Web Vitals.
 

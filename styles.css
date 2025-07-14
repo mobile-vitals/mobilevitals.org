@@ -198,6 +198,12 @@ body {
 .tab-button.active {
     color: #667eea;
     border-bottom-color: #667eea;
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.platform-icon {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
 }
 
 .tab-content {
@@ -205,11 +211,11 @@ body {
 }
 
 .tab-pane {
-    display: none;
+    display: none !important;
 }
 
 .tab-pane.active {
-    display: block;
+    display: block !important;
 }
 
 .tab-pane h4 {
@@ -225,12 +231,14 @@ body {
     border-radius: 8px;
     margin-bottom: 1.5rem;
     overflow: hidden;
+    position: relative;
 }
 
 .code-block pre {
     margin: 0;
     padding: 1.5rem;
     overflow-x: auto;
+    background: transparent !important;
 }
 
 .code-block code {
@@ -238,7 +246,40 @@ body {
     font-size: 0.9rem;
     line-height: 1.5;
     color: #e0e0e0;
+    background: transparent !important;
 }
+
+/* Prism.js customizations */
+.code-block .token.comment {
+    color: #6a737d !important;
+    font-style: italic;
+}
+
+.code-block .token.keyword {
+    color: #d73a49 !important;
+}
+
+.code-block .token.string {
+    color: #032f62 !important;
+}
+
+.code-block .token.function {
+    color: #6f42c1 !important;
+}
+
+.code-block .token.number {
+    color: #005cc5 !important;
+}
+
+.code-block .token.operator {
+    color: #d73a49 !important;
+}
+
+.code-block .token.punctuation {
+    color: #24292e !important;
+}
+
+
 
 /* Thresholds */
 .thresholds {

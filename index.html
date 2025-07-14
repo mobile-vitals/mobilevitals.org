@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
     <header class="header">
@@ -67,14 +68,30 @@
                             <div class="tab-pane active" data-platform="android">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// Android Cold Start Measurement
-// Use Android Studio Profiler or adb commands
+                                    <pre><code class="language-java">// Android Cold Start Measurement
+// Method 1: Using ADB command line
 adb shell am start -W -n com.example.app/.MainActivity
-// Measure from app launch to first frame rendered
-// Use Trace API for detailed timing
-Trace.beginSection("ColdStart");
-// Your app initialization code
-Trace.endSection();</code></pre>
+
+// Method 2: Using Android Studio Profiler
+// 1. Open Android Studio
+// 2. Go to Profiler tab
+// 3. Select CPU profiler
+// 4. Start recording and launch app
+// 5. Look for "Application onCreate" timing
+
+// Method 3: Using Trace API in code
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Trace.beginSection("ColdStart");
+        super.onCreate(savedInstanceState);
+        
+        // Your app initialization code
+        setContentView(R.layout.activity_main);
+        
+        Trace.endSection();
+    }
+}</code></pre>
                                 </div>
                                 
                                 <h4>Thresholds</h4>
@@ -97,18 +114,37 @@ Trace.endSection();</code></pre>
                             <div class="tab-pane" data-platform="ios">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// iOS Cold Start Measurement
-// Use Xcode Instruments or launch time profiling
-// Measure from app launch to first frame rendered
+                                    <pre><code class="language-swift">// iOS Cold Start Measurement
+// Method 1: Using Xcode Instruments
+// 1. Open Xcode
+// 2. Product > Profile (⌘+I)
+// 3. Select "Launch Time" template
+// 4. Run and analyze startup time
+
+// Method 2: Using code instrumentation
 import os.log
 
-let startTime = CFAbsoluteTimeGetCurrent()
-// Your app initialization code
-let endTime = CFAbsoluteTimeGetCurrent()
-let duration = endTime - startTime
-
-// Use Instruments.app for detailed analysis
-// Launch Time template in Instruments</code></pre>
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    func application(_ application: UIApplication, 
+                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        let startTime = CFAbsoluteTimeGetCurrent()
+        
+        // Your app initialization code
+        setupApp()
+        
+        let endTime = CFAbsoluteTimeGetCurrent()
+        let duration = endTime - startTime
+        
+        os_log("Cold start time: %f seconds", log: .default, type: .info, duration)
+        
+        return true
+    }
+    
+    private func setupApp() {
+        // Initialize your app components
+    }
+}</code></pre>
                                 </div>
                                 
                                 <h4>Thresholds</h4>
@@ -154,13 +190,33 @@ let duration = endTime - startTime
                             <div class="tab-pane active" data-platform="android">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// Android Warm Start Measurement
-// App is partially cached in memory
-// Use Android Studio Profiler
-// Measure from app resume to first frame
+                                    <pre><code class="language-java">// Android Warm Start Measurement
+// Method 1: Using ADB with background app
 adb shell am start -W -n com.example.app/.MainActivity
-// App should be in background, not killed
-// Use ActivityManager.getRunningTasks() to verify state</code></pre>
+
+// Method 2: Using Android Studio Profiler
+// 1. Launch app normally
+// 2. Press Home to background it
+// 3. Start CPU profiler
+// 4. Resume app from recent apps
+// 5. Measure "onResume" timing
+
+// Method 3: Using code instrumentation
+public class MainActivity extends AppCompatActivity {
+    private long resumeStartTime;
+    
+    @Override
+    protected void onResume() {
+        resumeStartTime = System.currentTimeMillis();
+        super.onResume();
+        
+        // Measure time to first frame
+        getWindow().getDecorView().post(() -> {
+            long resumeTime = System.currentTimeMillis() - resumeStartTime;
+            Log.d("WarmStart", "Resume time: " + resumeTime + "ms");
+        });
+    }
+}</code></pre>
                                 </div>
                                 
                                 <h4>Thresholds</h4>
@@ -183,16 +239,29 @@ adb shell am start -W -n com.example.app/.MainActivity
                             <div class="tab-pane" data-platform="ios">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// iOS Warm Start Measurement
-// App is partially cached in memory
-// Use Xcode Instruments Launch template
-// Measure from app resume to first frame
-// App should be in background, not terminated
-// Use applicationWillEnterForeground delegate method
-func applicationWillEnterForeground(_ application: UIApplication) {
-    let startTime = CFAbsoluteTimeGetCurrent()
-    // Resume your app
-    let endTime = CFAbsoluteTimeGetCurrent()
+                                    <pre><code class="language-swift">// iOS Warm Start Measurement
+// Method 1: Using Xcode Instruments
+// 1. Launch app normally
+// 2. Press Home to background it
+// 3. Product > Profile (⌘+I)
+// 4. Select "Launch Time" template
+// 5. Resume app from app switcher
+
+// Method 2: Using code instrumentation
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    private var foregroundStartTime: CFAbsoluteTime = 0
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        foregroundStartTime = CFAbsoluteTimeGetCurrent()
+        
+        // Resume your app
+        DispatchQueue.main.async {
+            let endTime = CFAbsoluteTimeGetCurrent()
+            let duration = endTime - self.foregroundStartTime
+            
+            os_log("Warm start time: %f seconds", log: .default, type: .info, duration)
+        }
+    }
 }</code></pre>
                                 </div>
                                 
@@ -238,17 +307,34 @@ func applicationWillEnterForeground(_ application: UIApplication) {
                             <div class="tab-pane active" data-platform="android">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// Android Time to Initial Display
-// Measure from app start to first frame rendered
-// Use Android Studio Profiler or systrace
-// Look for first frame in GPU trace
+                                    <pre><code class="language-java">// Android Time to Initial Display
+// Method 1: Using GPU Info
 adb shell dumpsys gfxinfo com.example.app
-// Or use FrameMetrics API
-if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-    getWindow().addOnFrameMetricsAvailableListener(
-        { window, frameMetrics -> 
-            // First frame timing
-        }, null);
+
+// Method 2: Using Android Studio Profiler
+// 1. Open Profiler tab
+// 2. Select GPU profiler
+// 3. Look for first frame in timeline
+// 4. Measure from app start to first frame
+
+// Method 3: Using FrameMetrics API
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getWindow().addOnFrameMetricsAvailableListener(
+                new Window.OnFrameMetricsAvailableListener() {
+                    @Override
+                    public void onFrameMetricsAvailable(Window window, FrameMetrics frameMetrics) {
+                        long firstFrameTime = frameMetrics.getMetric(FrameMetrics.FIRST_DRAW_FRAME);
+                        Log.d("InitialDisplay", "First frame: " + firstFrameTime + "ns");
+                    }
+                }, null);
+        }
+    }
 }</code></pre>
                                 </div>
                                 
@@ -272,17 +358,35 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             <div class="tab-pane" data-platform="ios">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// iOS Time to Initial Display
-// Measure from app start to first frame rendered
-// Use Xcode Instruments Core Animation template
-// Look for first frame in GPU trace
-// Use CADisplayLink for frame timing
-let displayLink = CADisplayLink(target: self, selector: #selector(frameCallback))
-displayLink.add(to: .main, forMode: .common)
+                                    <pre><code class="language-swift">// iOS Time to Initial Display
+// Method 1: Using Xcode Instruments
+// 1. Product > Profile (⌘+I)
+// 2. Select "Core Animation" template
+// 3. Look for first frame in GPU trace
+// 4. Measure from app start to first frame
 
-@objc func frameCallback() {
-    // First frame timing
-    let frameTime = CACurrentMediaTime()
+// Method 2: Using CADisplayLink
+class ViewController: UIViewController {
+    private var displayLink: CADisplayLink?
+    private var firstFrameTime: CFTimeInterval = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        displayLink = CADisplayLink(target: self, selector: #selector(frameCallback))
+        displayLink?.add(to: .main, forMode: .common)
+    }
+    
+    @objc func frameCallback() {
+        if firstFrameTime == 0 {
+            firstFrameTime = CACurrentMediaTime()
+            let appStartTime = ProcessInfo.processInfo.systemUptime
+            let initialDisplayTime = firstFrameTime - appStartTime
+            
+            print("Time to initial display: \(initialDisplayTime)s")
+            displayLink?.invalidate()
+        }
+    }
 }</code></pre>
                                 </div>
                                 
@@ -327,14 +431,29 @@ displayLink.add(to: .main, forMode: .common)
                             <div class="tab-pane active" data-platform="android">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// Android Time to Full Display
-// Measure from app start to fully interactive
-// Use Android Studio Profiler
-// Track until all UI elements are loaded
-// Use ViewTreeObserver for layout completion
-view.viewTreeObserver.addOnGlobalLayoutListener {
-    // Layout is complete, app is fully usable
-    val endTime = System.currentTimeMillis()
+                                    <pre><code class="language-kotlin">// Android Time to Full Display
+// Method 1: Using ViewTreeObserver
+class MainActivity : AppCompatActivity() {
+    private var appStartTime: Long = 0
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appStartTime = System.currentTimeMillis()
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // Wait for layout completion
+        findViewById<View>(android.R.id.content).viewTreeObserver
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val fullDisplayTime = System.currentTimeMillis() - appStartTime
+                    Log.d("FullDisplay", "Time to full display: ${fullDisplayTime}ms")
+                    
+                    // Remove listener to avoid multiple calls
+                    findViewById<View>(android.R.id.content).viewTreeObserver
+                        .removeOnGlobalLayoutListener(this)
+                }
+            })
+    }
 }</code></pre>
                                 </div>
                                 
@@ -358,15 +477,26 @@ view.viewTreeObserver.addOnGlobalLayoutListener {
                             <div class="tab-pane" data-platform="ios">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// iOS Time to Full Display
-// Measure from app start to fully interactive
-// Use Xcode Instruments
-// Track until all UI elements are loaded
-// Use viewDidLayoutSubviews for completion
-override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    // Layout is complete, app is fully usable
-    let endTime = CFAbsoluteTimeGetCurrent()
+                                    <pre><code class="language-swift">// iOS Time to Full Display
+// Method 1: Using viewDidLayoutSubviews
+class ViewController: UIViewController {
+    private var appStartTime: CFAbsoluteTime = 0
+    private var hasMeasuredFullDisplay = false
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        appStartTime = CFAbsoluteTimeGetCurrent()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if !hasMeasuredFullDisplay {
+            let fullDisplayTime = CFAbsoluteTimeGetCurrent() - appStartTime
+            print("Time to full display: \(fullDisplayTime)s")
+            hasMeasuredFullDisplay = true
+        }
+    }
 }</code></pre>
                                 </div>
                                 
@@ -414,15 +544,31 @@ override func viewDidLayoutSubviews() {
                             <div class="tab-pane active" data-platform="android">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// Android Frame Delay Measurement
-// Use Android Studio Profiler or systrace
-// Monitor frame rendering times
+                                    <pre><code class="language-kotlin">// Android Frame Delay Measurement
+// Method 1: Using GPU Info
 adb shell dumpsys gfxinfo com.example.app
-// Look for frame drops and jank
-// Use Choreographer for frame timing
-Choreographer.getInstance().postFrameCallback { frameTimeNanos ->
-    // Frame timing analysis
-    val frameDelay = frameTimeNanos - lastFrameTime
+
+// Method 2: Using Choreographer
+class MainActivity : AppCompatActivity() {
+    private var lastFrameTime: Long = 0
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                if (lastFrameTime > 0) {
+                    val frameDelay = (frameTimeNanos - lastFrameTime) / 1_000_000 // Convert to ms
+                    if (frameDelay > 16.67) { // 60fps = 16.67ms per frame
+                        Log.w("FrameDelay", "Frame delay: ${frameDelay}ms")
+                    }
+                }
+                lastFrameTime = frameTimeNanos
+                Choreographer.getInstance().postFrameCallback(this)
+            }
+        })
+    }
 }</code></pre>
                                 </div>
                                 
@@ -446,18 +592,39 @@ Choreographer.getInstance().postFrameCallback { frameTimeNanos ->
                             <div class="tab-pane" data-platform="ios">
                                 <h4>How to Measure</h4>
                                 <div class="code-block">
-                                    <pre><code>// iOS Frame Delay Measurement
-// Use Xcode Instruments Core Animation
-// Monitor frame rendering times
-// Look for frame drops and jank
-// Use CADisplayLink for frame timing
-let displayLink = CADisplayLink(target: self, selector: #selector(frameCallback))
-displayLink.add(to: .main, forMode: .common)
+                                    <pre><code class="language-swift">// iOS Frame Delay Measurement
+// Method 1: Using Xcode Instruments
+// 1. Product > Profile (⌘+I)
+// 2. Select "Core Animation" template
+// 3. Look for frame drops in timeline
+// 4. Monitor GPU utilization
 
-@objc func frameCallback() {
-    let currentTime = CACurrentMediaTime()
-    let frameDelay = currentTime - lastFrameTime
-    // Frame timing analysis
+// Method 2: Using CADisplayLink
+class ViewController: UIViewController {
+    private var displayLink: CADisplayLink?
+    private var lastFrameTime: CFTimeInterval = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        displayLink = CADisplayLink(target: self, selector: #selector(frameCallback))
+        displayLink?.add(to: .main, forMode: .common)
+    }
+    
+    @objc func frameCallback() {
+        let currentTime = CACurrentMediaTime()
+        
+        if lastFrameTime > 0 {
+            let frameDelay = currentTime - lastFrameTime
+            let expectedFrameTime: CFTimeInterval = 1.0 / 60.0 // 60fps
+            
+            if frameDelay > expectedFrameTime {
+                print("Frame delay detected: \(frameDelay)s (expected: \(expectedFrameTime)s)")
+            }
+        }
+        
+        lastFrameTime = currentTime
+    }
 }</code></pre>
                                 </div>
                                 
@@ -560,10 +727,12 @@ displayLink.add(to: .main, forMode: .common)
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Mobile Vitals. Inspired by <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener">Web Vitals</a>.</p>
+            <p>&copy; 2025 Mobile Vitals. Inspired by <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener">Web Vitals</a>.</p>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
