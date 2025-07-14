@@ -148,23 +148,43 @@ body {
 }
 
 .metric-importance {
-    background: #f8f9fa;
-    border-left: 4px solid #667eea;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border-radius: 0 8px 8px 0;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #c3e6cb;
+    padding: 1.5rem 0 1.5rem 3.5rem;
+    margin: 0 -2rem 2rem -2rem;
+    border-radius: 0;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: calc(100% + 4rem);
+}
+
+.metric-importance::before {
+    content: "★";
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 1.5rem;
+    color: #155724;
 }
 
 .metric-importance h4 {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #1a1a1a;
+    color: #155724;
 }
 
 .metric-importance p {
-    color: #666;
+    color: #155724;
     line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+}
+
+.metric-importance:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
 }
 
 /* Platform tabs */
@@ -468,6 +488,16 @@ body {
     
     .metric-title {
         font-size: 1.5rem;
+    }
+    
+    .metric-importance {
+        padding: 1rem;
+    }
+    
+    .metric-importance::before {
+        font-size: 1.2rem;
+        top: 0.75rem;
+        right: 0.75rem;
     }
     
     .tab-buttons {
