@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Vitals - Quality signals for mobile development</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-brand">
+                    <img src="mobile-vitals-logo.png" alt="Mobile Vitals" class="logo">
+                    <span class="brand-text">mobilevitals.org</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#metrics" class="nav-link">Metrics</a>
+                    <a href="#scoring" class="nav-link">Scoring</a>
+                    <a href="#reading" class="nav-link">Resources</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section id="overview" class="hero">
+                <h1 class="hero-title">Mobile Vitals</h1>
+                <p class="hero-subtitle">
+                    Quality signals for mobile development, inspired by Web Vitals. 
+                    Helping app developers deliver a great mobile user experience, 
+                    regardless of whether you're building for iOS or Android.
+                </p>
+                <p class="hero-description">
+                    We've used benchmarks collected from real-world applications to help set goals for these metrics. 
+                    Answering the question, <em>"what *is* a good experience on my platform?"</em>
+                </p>
+            </section>
+
+            <section id="metrics" class="metrics">
+                <h2 class="section-title">The Metrics</h2>
+                
+                <div class="metric-card">
+                    <h3 class="metric-title">Cold Start</h3>
+                    <p class="metric-description">
+                        The time it takes a mobile application to start either immediately after booting,
+                        or after the application has been killed or evicted from memory.
+                    </p>
+                    
+                    <div class="metric-importance">
+                        <h4>Why is this important?</h4>
+                        <p>Cold Start represents a user's first experience with your application. Make a good first impression.</p>
+                    </div>
+
+                    <div class="platform-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-platform="android">Android</button>
+                            <button class="tab-button" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" data-platform="android">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-java">// Android Cold Start Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        // TODO: Add your cold start measurement code here
+        // Example: Use Trace API, System.currentTimeMillis(), or Android Studio Profiler
+        // Reference: https://developer.android.com/topic/performance/vitals/launch-time
+        
+        Log.d("ColdStart", "Hello World - Add your measurement code here!");
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" data-platform="ios">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-swift">// iOS Cold Start Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+import os.log
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    func application(_ application: UIApplication, 
+                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // TODO: Add your cold start measurement code here
+        // Example: Use CFAbsoluteTimeGetCurrent(), Xcode Instruments, or os_log
+        // Reference: https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time
+        
+        print("Hello World - Add your measurement code here!")
+        
+        return true
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3 class="metric-title">Warm Start</h3>
+                    <p class="metric-description">
+                        Warm Starts measure how long it takes your application to start when some combination of
+                        state and resources is already available in memory. Warm start measures a spectrum of
+                        behaviour, as it depends on what resources are available, vs., what's been evicted.
+                    </p>
+                    
+                    <div class="metric-importance">
+                        <h4>Why is this important?</h4>
+                        <p>Your users will frequently not be launching your application from scratch. Slow Warm Start performance will contribute to bad perceived performance over time.</p>
+                    </div>
+
+                    <div class="platform-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-platform="android">Android</button>
+                            <button class="tab-button" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" data-platform="android">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-java">// Android Warm Start Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        // TODO: Add your warm start measurement code here
+        // Example: Use System.currentTimeMillis(), onResume timing, or Android Studio Profiler
+        // Reference: https://developer.android.com/topic/performance/vitals/launch-time
+        
+        Log.d("WarmStart", "Hello World - Add your measurement code here!");
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" data-platform="ios">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-swift">// iOS Warm Start Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // TODO: Add your warm start measurement code here
+        // Example: Use CFAbsoluteTimeGetCurrent(), applicationWillEnterForeground, or Xcode Instruments
+        // Reference: https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time
+        
+        print("Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3 class="metric-title">Time to Initial Display</h3>
+                    <p class="metric-description">
+                        The time it takes your application, either from a cold or warm start, to render its
+                        first frame of animation to screen.
+                    </p>
+                    
+                    <div class="metric-importance">
+                        <h4>Why is this important?</h4>
+                        <p>This metric is a good indicator of when your user perceives your application as having actually launched.</p>
+                    </div>
+
+                    <div class="platform-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-platform="android">Android</button>
+                            <button class="tab-button" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" data-platform="android">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-java">// Android Time to Initial Display - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        // TODO: Add your initial display measurement code here
+        // Example: Use FrameMetrics API, GPU Info, or Android Studio Profiler
+        // Reference: https://developer.android.com/topic/performance/vitals/launch-time#time-initial
+        
+        Log.d("InitialDisplay", "Hello World - Add your measurement code here!");
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" data-platform="ios">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-swift">// iOS Time to Initial Display - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // TODO: Add your initial display measurement code here
+        // Example: Use CADisplayLink, Xcode Instruments, or Core Animation profiling
+        // Reference: https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time#Track-additional-startup-activities
+        
+        print("Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3 class="metric-title">Time to Full Display</h3>
+                    <p class="metric-description">
+                        The time it takes your application to actually become useable.
+                    </p>
+                    
+                    <div class="metric-importance">
+                        <h4>Why is this important?</h4>
+                        <p>If additional work, e.g., rendering a document, needs to happen before your application becomes useable, this will contribute to your users perceived performance.</p>
+                    </div>
+
+                    <div class="platform-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-platform="android">Android</button>
+                            <button class="tab-button" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" data-platform="android">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-kotlin">// Android Time to Full Display - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // TODO: Add your full display measurement code here
+        // Example: Use ViewTreeObserver, layout completion listeners, or Android Studio Profiler
+        // Reference: https://developer.android.com/topic/performance/vitals/launch-time#time-full
+        
+        Log.d("FullDisplay", "Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" data-platform="ios">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-swift">// iOS Time to Full Display - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // TODO: Add your full display measurement code here
+        // Example: Use viewDidLayoutSubviews, layout completion, or Xcode Instruments
+        // Reference: https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time#Track-additional-startup-activities
+        
+        print("Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3 class="metric-title">Frame Delay</h3>
+                    <p class="metric-description">
+                        When a user interacts with your application, the next frame of animation should render in a
+                        reasonable amount of time and, the app falling back into a responsive state.
+                        Frame delay is a spectrum, slow frames <em>feel</em> janky, where as truly frozen frames can result
+                        in an application feeling unresponsive or hung.
+                    </p>
+                    
+                    <div class="metric-importance">
+                        <h4>Why is this important?</h4>
+                        <p>A janky or frozen application feels unstable and, in general, is a bad user experience.</p>
+                    </div>
+
+                    <div class="platform-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-platform="android">Android</button>
+                            <button class="tab-button" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" data-platform="android">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-kotlin">// Android Frame Delay Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // TODO: Add your frame delay measurement code here
+        // Example: Use Choreographer, GPU Info, or Android Studio Profiler
+        // Reference: https://developer.android.com/topic/performance/vitals/render
+        
+        Log.d("FrameDelay", "Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" data-platform="ios">
+                                <h4>How to Measure</h4>
+                                <div class="code-block">
+                                    <pre><code class="language-swift">// iOS Frame Delay Measurement - Hello World Placeholder
+// TODO: Replace with actual implementation for your app
+
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // TODO: Add your frame delay measurement code here
+        // Example: Use CADisplayLink, Xcode Instruments, or Core Animation profiling
+        // Reference: https://developer.apple.com/documentation/xcode/understanding-hangs-in-your-app#Understand-hangs
+        
+        print("Hello World - Add your measurement code here!")
+    }
+}</code></pre>
+                                </div>
+                                
+                                <h4>Thresholds</h4>
+                                <div class="thresholds">
+                                    <div class="threshold good">
+                                        <span class="threshold-label">good</span>
+                                        <span class="threshold-value">200ms - 1s</span>
+                                    </div>
+                                    <div class="threshold meh">
+                                        <span class="threshold-label">meh</span>
+                                        <span class="threshold-value">1s - 3s</span>
+                                    </div>
+                                    <div class="threshold bad">
+                                        <span class="threshold-label">bad</span>
+                                        <span class="threshold-value">>3s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="scoring" class="scoring">
+                <h2 class="section-title">Calculating Mobile Vitals Score</h2>
+                
+                <div class="scoring-content">
+                    <div class="scoring-section">
+                        <h3>Individual Metrics</h3>
+                        <p>
+                            The <code>good</code>, <code>meh</code>, <code>bad</code> measurement for each individual metric is calculated based on the observed behaviour of Sentry's corpus of mobile telemetry, along with other telemetry that has been provided by the community.
+                        </p>
+                        <p>
+                            A score in the 8th percentile or higher, represents <code>good</code>, a score of 25th percentile or higher <code>meh</code>, and a score below the 25th percentile is <code>bad</code>.
+                        </p>
+                        <p>
+                            Scores are further broken out by Android and iOS, as there's significant variation between the two device types.
+                        </p>
+                    </div>
+                    
+                    <div class="scoring-section">
+                        <h3>Overall Score</h3>
+                        <p>
+                            Similar to <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring" target="_blank" rel="noopener">lighthouse performance-scoring</a>, the overall score provides a score between 1 and 100 for Mobile Vitals, based on a log-normal distribution of each weighted score.
+                        </p>
+                        <p>
+                            Each individual score is weighted as follows, join the discussion in CONTRIBUTING if you'd like to help shape the weighting that's applied (<em>this is a first pass, based on our best guesses</em>).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reading" class="resources">
+                <h2 class="section-title">Further Reading</h2>
+                
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3>Cold Start / Warm Start</h3>
+                        <ul>
+                            <li><a href="https://developer.android.com/topic/performance/vitals/launch-time#cold" target="_blank" rel="noopener">Android: Understand the different app startup times</a></li>
+                            <li><a href="https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time" target="_blank" rel="noopener">iOS: Understand the cold and warm launch</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3>Time to Initial Display</h3>
+                        <ul>
+                            <li><a href="https://developer.android.com/topic/performance/vitals/launch-time#time-initial" target="_blank" rel="noopener">Android: Time to initial display</a></li>
+                            <li><a href="https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time#Track-additional-startup-activities" target="_blank" rel="noopener">iOS: Track additional startup activities</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3>Time to Full Display</h3>
+                        <ul>
+                            <li><a href="https://developer.android.com/topic/performance/vitals/launch-time#time-full" target="_blank" rel="noopener">Android: Time to full display</a></li>
+                            <li><a href="https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time#Track-additional-startup-activities" target="_blank" rel="noopener">iOS: Track additional startup activities</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3>Frame Delay</h3>
+                        <ul>
+                            <li><a href="https://developer.android.com/topic/performance/vitals/render" target="_blank" rel="noopener">Android: Relationship between Slow Frames, Frozen Frames, and ANR</a></li>
+                            <li><a href="https://developer.apple.com/documentation/xcode/understanding-hangs-in-your-app#Understand-hangs" target="_blank" rel="noopener">iOS: Understand hangs</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3>Performance Scores</h3>
+                        <ul>
+                            <li><a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring" target="_blank" rel="noopener">Lighthouse performance scoring</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Mobile Vitals. Inspired by <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener">Web Vitals</a>.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

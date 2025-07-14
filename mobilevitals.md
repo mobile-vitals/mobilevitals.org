@@ -3,7 +3,7 @@
 
 mobilevitals.org is an effort, inspired by [Web Vitals](https://web.dev/articles/vitals), to define similar quality signals for mobile development. With the goal of helping app developers deliver a great mobile user experience, regardless of whether you're building for iOS, or Android.
 
-We've used benchmarks collected from real-world applications to help set goals for these metrics. Answering the question, _"what is a best in class mobile experience?"_
+We've used benchmarks collected from real-world applications to help set goals for these metrics. Answering the question, _"what *is* a good experience on my platform?"_
 
 ## The Metrics
 
@@ -12,7 +12,7 @@ We've used benchmarks collected from real-world applications to help set goals f
 The time it takes a mobile application to start either immediately after booting,
 or after the application has been killed or evicted from memory.
 
-#### Why It's Important
+#### Why is this important?
 
 Cold Start repsresents a users first experience with your application. Make a good first impression.
 
@@ -46,7 +46,7 @@ Warm Starts measure how long it takes your application to start when some combin
 state and resources is already available in memory. Warm start measures a spectrum of
 behaviour, as it depends on what resources are available, vs., what's been evicted.
 
-#### Why it's important
+#### Why is this important?
 
 Your users will frequently not be launching your application from
 scratch. Slow Warm Start performance will contribute to bad perceived performance over time.
@@ -80,7 +80,7 @@ scratch. Slow Warm Start performance will contribute to bad perceived performanc
 The time it takes your application, either from a cold or warm start, to render its
 first frame of animation to screen.
 
-#### Why it's important
+#### Why is this important?
 
 This metric is a good indicator of when your user perceives your application as having actually launched.
 
@@ -112,7 +112,7 @@ This metric is a good indicator of when your user perceives your application as 
 
 The time it takes your application to actually become useable.
 
-#### Why it's important
+#### Why is this important?
 
 If additional work, e.g., [rendering a document](https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time#Track-additional-startup-activities), needs to happen before
 your application becomes useable, this will contribute to your users perceived performance.
@@ -149,7 +149,7 @@ reasonable amount of time and, the app falling back into a responsive state.
 Frame delay is a spectrum, slow frames _feel_ janky, where as truly frozen frames can result
 in an application feeling unresponsive or hung.
 
-#### Why it's important
+#### Why is this important?
 
 A janky or frozen application feels unstable and, in general, is a bad user experience.
 
